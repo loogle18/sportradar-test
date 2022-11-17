@@ -12,12 +12,12 @@ const rl = readline.createInterface({
 const start = (memo) => {
   rl.question('Home team name:', function(home) {
     if (home.length < 3) {
-      console.log('Home team name must be at least 3 characters long!');
+      throw new Error('Home team name must be at least 3 characters long!');
       process.exit(1);
     }
     rl.question('Away team name:', function(away) {
       if (away.length < 3) {
-        console.log('Away team name must be at least 3 characters long!');
+        throw new Error('Away team name must be at least 3 characters long!');
         process.exit(1);
       }
       memo.match = {
@@ -40,12 +40,12 @@ const start = (memo) => {
 const update = (memo) => {
   rl.question('Home team score:', function(home) {
     if (!utils.isNumeric(home)) {
-      console.log('Home team score must be a positive whole number!');
+      throw new Error('Home team score must be a positive whole number!');
       process.exit(1);
     }
     rl.question('Away team score:', function(away) {
       if (!utils.isNumeric(away)) {
-        console.log('Away team score must be a positive whole number!');
+        throw new Error('Away team score must be a positive whole number!');
         process.exit(1);
       }
       memo.match.home.score += Number(home);
@@ -77,9 +77,51 @@ const summary = (memo) => {
 };
 
 
+const run = (command, memo) => {
+  switch (command) {
+    case 'start':
+      if (utils.isCurrentMatch(memo)) {
+        throw new Error(`There's already current match between ${memo.match.home.name} and ${memo.match.away.name}!`);
+        process.exit(1);
+      }
+      start(memo);
+      break;
+    case 'update':
+      if (!utils.isCurrentMatch(memo)) {
+        throw new Error("There's no current match. Please start a match first.");
+        process.exit(1);
+      }
+      update(memo);
+      break;
+    case 'finish':
+      if (!utils.isCurrentMatch(memo)) {
+        throw new Error("There's no current match. Please start a match first.");
+        process.exit(1);
+      }
+      finish(memo);
+      break;
+    case 'summary':
+      if (utils.isCurrentMatch(memo)) {
+        throw new Error(`There's a match between ${memo.match.home.name} and ${memo.match.away.name}! Please finish the match first.`);
+        process.exit(1);
+      }
+      if (!utils.isAnyHistory(memo)) {
+        throw new Error(`There's no history! Please start and finish at least one match first.`);
+        process.exit(1);
+      }
+      summary(memo);
+      break;
+    default:
+      throw new Error('Invalid command!');
+      process.exit(1);
+  }
+};
+
+
 module.exports = {
   start,
   update,
   finish,
-  summary
+  summary,
+  run
 };
