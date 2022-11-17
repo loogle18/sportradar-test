@@ -1,0 +1,11 @@
+{
+  "name": "@loogle18/sportradar-test",
+  "version": "1.0.0",
+  "description": "Sportradar tech test",
+  "main": "src/index.js",
+  "author": "loogle18",
+  "license": "MIT",
+  "dependencies": {
+    "argparse": "^2.0.1"
+  }
+}
