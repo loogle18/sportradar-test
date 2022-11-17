@@ -21,6 +21,8 @@ const main = () => {
 
   if (command === 'test') {
     console.log('Testing...');
+    tests.run();
+    console.log('All tests passed successfully!');
     process.exit(0);
   } else {
     game.run(command, memo);

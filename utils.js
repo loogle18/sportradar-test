@@ -22,10 +22,19 @@ const createFileIfNeeded = (path, data) => {
   }
 };
 
+class InGameError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'InGameError';
+  }
+}
+
 
 module.exports = {
   isNumeric,
+  isObjEmpty,
   isCurrentMatch,
   isAnyHistory,
-  createFileIfNeeded
+  createFileIfNeeded,
+  InGameError
 };

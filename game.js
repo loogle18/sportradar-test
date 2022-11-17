@@ -81,38 +81,38 @@ const run = (command, memo) => {
   switch (command) {
     case 'start':
       if (utils.isCurrentMatch(memo)) {
-        throw new Error(`There's already current match between ${memo.match.home.name} and ${memo.match.away.name}!`);
+        throw new utils.InGameError(`There's already current match between ${memo.match.home.name} and ${memo.match.away.name}!`);
         process.exit(1);
       }
       start(memo);
       break;
     case 'update':
       if (!utils.isCurrentMatch(memo)) {
-        throw new Error("There's no current match. Please start a match first.");
+        throw new utils.InGameError("There's no current match. Please start a match first.");
         process.exit(1);
       }
       update(memo);
       break;
     case 'finish':
       if (!utils.isCurrentMatch(memo)) {
-        throw new Error("There's no current match. Please start a match first.");
+        throw new utils.InGameError("There's no current match. Please start a match first.");
         process.exit(1);
       }
       finish(memo);
       break;
     case 'summary':
       if (utils.isCurrentMatch(memo)) {
-        throw new Error(`There's a match between ${memo.match.home.name} and ${memo.match.away.name}! Please finish the match first.`);
+        throw new utils.InGameError(`There's a match between ${memo.match.home.name} and ${memo.match.away.name}! Please finish the match first.`);
         process.exit(1);
       }
       if (!utils.isAnyHistory(memo)) {
-        throw new Error(`There's no history! Please start and finish at least one match first.`);
+        throw new utils.InGameError(`There's no history! Please start and finish at least one match first.`);
         process.exit(1);
       }
       summary(memo);
       break;
     default:
-      throw new Error('Invalid command!');
+      throw new utils.InGameError('Invalid command!');
       process.exit(1);
   }
 };
